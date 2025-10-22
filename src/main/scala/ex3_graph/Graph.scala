@@ -8,7 +8,9 @@ trait Graph {
   val nodes: Set[N]
   val edges: Set[(N, N)]
 
-  def successors(node: N) : Set[N] = ???
+  def successors(node: N) : Set[N] = edges
+    .filter((start, _) => start == node)
+    .map((_, end) => end)
 
   def computeDists(start: N): Map[N, Int] = ??? 
 
