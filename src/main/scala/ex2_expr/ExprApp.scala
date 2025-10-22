@@ -14,6 +14,8 @@ object ExprApp {
 
     println("asserting exercise tasks...")
 
+
+    // Task 2.1 & 2.2
     assertEquals(Lit(123), "123.0")
     assertEquals(Var("velocity"), "velocity")
 
@@ -21,6 +23,10 @@ object ExprApp {
     assertEquals(Mul(Lit(10), Var("x")), "(10.0*x)")
     assertEquals(Neg(Lit(10)), "(-10.0)")
     assertEquals(Recip(Lit(10)), "(1/10.0)")
+
+    // Task 2.3
+    // TODO
+
 
     println("...all assertions passed.")
   }

@@ -1,9 +1,10 @@
 package ex2_expr
 
 sealed trait Expr
+// object oriented toString's
 case class Lit(value: Double) extends Expr {
 
-  override def toString: String = value.toString
+  //Task 2.1:  override def toString: String = value.toString
 
 //  // bonus
 //  override def toString: String = {
@@ -14,33 +15,49 @@ case class Lit(value: Double) extends Expr {
 //  }
 }
 case class Var(name: String) extends Expr {
-  override def toString: String = name
+  //Task 2.1:  override def toString: String = name
 }
 
-sealed trait BinExpr(left: Expr, right: Expr) extends Expr
+sealed trait BinExpr(val left: Expr, val right: Expr) extends Expr
 case class Add(l: Expr, r: Expr) extends BinExpr(l, r) {
-  override def toString: String = s"($l+$r)"
+  //Task 2.1:  override def toString: String = s"($l+$r)"
 }
 case class Mul(l: Expr, r: Expr) extends BinExpr(l, r) {
-  override def toString: String = s"($l*$r)"
+  //Task 2.1:  override def toString: String = s"($l*$r)"
 }
 
 sealed trait UnyExpr(sub: Expr) extends Expr
 case class Neg(s: Expr) extends UnyExpr(s) {
-  override def toString: String = s"(-$s)"
+  //Task 2.1:  override def toString: String = s"(-$s)"
 }
 case class Recip(s: Expr) extends UnyExpr(s) {
-  override def toString: String = s"(1/$s)"
+  //Task 2.1:   override def toString: String = s"(1/$s)"
 }
 
-def infix(expr: Expr): String = ??? // TODO:
+// functional oriented toString's "infix"
+def infix(expr: Expr): String = {
+  def op(expr: BinExpr): String = {
+    expr match {
+      case Add(_, _) => "+"
+      case Mul(_, _) => "*"
+    }
+  }
+
+  expr match {
+    case Lit(v) => v.toString
+    case Var(n) => n
+    case b: BinExpr => s"(${infix(b.left)}${op(b)}${infix(b.right)})"
+    case Neg(x) => s"(-${infix(x)})"
+    case Recip(x) => s"(1/${infix(x)})"
+  }
+}
 
 def eval(expr: Expr, bds: Map[String, Double]): Double = ???
 
 def simplify(expr: Expr): Expr = ???
   
 def assertEquals(expr: Expr, expected: String): Unit = {
-  val actual: String = expr.toString
+  val actual: String = infix(expr)
   val success: Boolean = actual == expected
   if (!success)
   {
