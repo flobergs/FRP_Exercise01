@@ -45,16 +45,31 @@ trait Graph {
       }
     }
 
-    pathsRec(Queue(start), Map(start -> List()), Set())
+    pathsRec(Queue(start), Map(start -> List(start)), Set())
       .map((k,v) => (k, v.reverse))
   }
 
-  def computeValues[R](start: N, startValue: R, resultFn: (N, R) => R): Map[N, R] = ???
+  def computeValues[R](start: N, startValue: R, resultFn: (N, R) => R): Map[N, R] = {
+    def computeRec(queue: Queue[N], result: Map[N, R], visited : Set[N]) : Map[N, R] = {
+      if (queue.isEmpty) result
+      else {
+        val node = queue.head
+        val nextVisited = visited + node
+        val successorList = successors(node)
+          .removedAll(visited)
+          .removedAll(queue)
+        val nextQueue = queue.tail.appendedAll(successorList)
+        val nextResult = result ++ successorList.map(successor => (successor, resultFn(successor, result(node))))
+        computeRec(nextQueue, nextResult, nextVisited)
+      }
+    }
+    computeRec(Queue(start), Map(start -> startValue), Set())
+  }
 
-  def computeDistsG(start: N): Map[N, Int] = ???
+  def computeDistsG(start: N): Map[N, Int] = computeValues(start, 0, (successor, result) => result + 1)
 
 
-  def computePathsG(start: N): Map[N, List[N]] = ???
+  def computePathsG(start: N): Map[N, List[N]] = computeValues(start, List(start), (successor, result) => successor :: result ).map((k,v)=>(k, v.reverse))
 
 }
 
