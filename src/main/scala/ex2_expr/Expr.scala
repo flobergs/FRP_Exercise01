@@ -4,7 +4,7 @@ sealed trait Expr
 // object oriented toString's
 case class Lit(value: Double) extends Expr {
 
-  //Task 2.1:  override def toString: String = value.toString
+  override def toString: String = value.toString
 
 //  // bonus
 //  override def toString: String = {
@@ -15,23 +15,23 @@ case class Lit(value: Double) extends Expr {
 //  }
 }
 case class Var(name: String) extends Expr {
-  //Task 2.1:  override def toString: String = name
+  override def toString: String = name
 }
 
 sealed trait BinExpr(val left: Expr, val right: Expr) extends Expr
 case class Add(l: Expr, r: Expr) extends BinExpr(l, r) {
-  //Task 2.1:  override def toString: String = s"($l+$r)"
+  override def toString: String = s"($l+$r)"
 }
 case class Mul(l: Expr, r: Expr) extends BinExpr(l, r) {
-  //Task 2.1:  override def toString: String = s"($l*$r)"
+  override def toString: String = s"($l*$r)"
 }
 
 sealed trait UnyExpr(sub: Expr) extends Expr
 case class Neg(s: Expr) extends UnyExpr(s) {
-  //Task 2.1:  override def toString: String = s"(-$s)"
+  override def toString: String = s"(-$s)"
 }
 case class Recip(s: Expr) extends UnyExpr(s) {
-  //Task 2.1:   override def toString: String = s"(1/$s)"
+  override def toString: String = s"(1/$s)"
 }
 
 // functional oriented toString's "infix"
@@ -67,7 +67,40 @@ def eval(expr: Expr, bds: Map[String, Double]): Double = {
   eval(expr)
 }
 
-def simplify(expr: Expr): Expr = ???
+def simplify(expr: Expr): Expr = {
+  expr match {
+    case e@Lit(_) => e
+    case e@Var(_) => e
+    case Add(l, r) =>
+      (simplify(l), simplify(r)) match {
+        case (Lit(v1), Lit(v2)) => Lit(v1 + v2)
+        case (Lit(0), a) => a
+        case (a, Lit(0)) => a
+        case (ls, rs) => Add(ls, rs)
+      }
+    case Mul(l, r) =>
+      (simplify(l), simplify(r)) match {
+        case (Lit(v1), Lit(v2)) => Lit(v1 * v2)
+        case (Lit(0), _) => Lit(0)
+        case (_, Lit(0)) => Lit(0)
+        case (Lit(1), a) => a
+        case (a, Lit(1)) => a
+        case (ls, rs) => Mul(ls, rs)
+      }
+    case Neg(s) =>
+      simplify(s) match {
+        case Lit(v) => Lit(-v)
+        case Neg(e) => e
+        case simplifiedInner@_ => Neg(simplifiedInner)
+      }
+    case Recip(s) =>
+      simplify(s) match {
+        case Lit(v) => Lit(1/v)
+        case Recip(e) => e
+        case simplifiedInner@_ => Recip(simplifiedInner)
+      }
+  }
+}
   
 def assertEquals(expr: Expr, expected: String): Unit = {
   val actual: String = infix(expr)
