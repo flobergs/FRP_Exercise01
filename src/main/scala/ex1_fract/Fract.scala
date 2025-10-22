@@ -21,7 +21,7 @@ final class Fract(_n: Int, _d: Int) extends Ordered[Fract] {
   def *(that: Int): Fract = this * Fract(that, 1)
   def /(that: Int): Fract = this / Fract(that, 1)
 
-  override def toString: String = if (denom == 1) s"$numer" else s"$numer \\ $denom"
+  override def toString: String = if (denom == 1) s"$numer" else s"$numer\\$denom"
 
   override def equals(obj: Any): Boolean = obj match {
     case that: Fract => numer == that.numer && denom == that.denom
@@ -66,4 +66,6 @@ extension(i: Int) {
   def -(that: Fract): Fract = Fract(i) - that
   def *(that: Fract): Fract = Fract(i) * that
   def /(that: Fract): Fract = Fract(i) / that
+
+  def \(d: Int) = Fract(i, d)
 }
