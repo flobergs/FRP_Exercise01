@@ -29,5 +29,17 @@ object FractApp {
     assert(Fract(1,2).compare(Fract(2,4)) == 0)
     assert(Fract(1,2).compare(Fract(3,4)) < 0)
     assert(Fract(1, 4) < Fract(2, 5))
+
+    //Task 3.1
+    assert(Fract(1,2) + 1 == Fract(3,2))
+    assert(Fract(1,2) - 3 == Fract(-5,2))
+    assert(Fract(1,2) * 5 == Fract(5,2))
+    assert(Fract(1,2) / 2 == Fract(1,4))
+    assert(1 + Fract(1,2) == Fract(3,2))
+    assert(3 - Fract(1,2) == Fract(5,2))
+    assert(5 * Fract(1,2) == Fract(5,2))
+    assert(2 / Fract(1,2) == 4)
+    assert(Fract(1,2) * 4 == 2)
+    assert(((1 + Fract(1,2)) * 3) == Fract(9,2))
   }
 }

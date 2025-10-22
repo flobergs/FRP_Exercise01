@@ -15,6 +15,12 @@ final class Fract(_n: Int, _d: Int) extends Ordered[Fract] {
   def neg() = Fract(-numer, denom)
   def rec() = Fract(denom, numer)
 
+  //overloads, to use operations wit Int's
+  def +(that: Int): Fract = this + Fract(that, 1)
+  def -(that: Int): Fract = this - Fract(that, 1)
+  def *(that: Int): Fract = this * Fract(that, 1)
+  def /(that: Int): Fract = this / Fract(that, 1)
+
   override def toString: String = if (denom == 1) s"$numer" else s"$numer \\ $denom"
 
   override def equals(obj: Any): Boolean = obj match {
@@ -30,6 +36,9 @@ final class Fract(_n: Int, _d: Int) extends Ordered[Fract] {
     val b = that.numer * denom
     a compare b
   }
+
+  // Bonus
+  def ==(that: Int): Boolean = this == Fract(that)
 }
 
 object Fract {
@@ -50,4 +59,11 @@ private def computeGcd(a: Int, b: Int): Int = {
   else if (b > a) computeGcd(b, a)
   else if (b == 0) a
   else computeGcd(b, a % b)
+}
+
+extension(i: Int) {
+  def +(that: Fract): Fract = Fract(i) + that
+  def -(that: Fract): Fract = Fract(i) - that
+  def *(that: Fract): Fract = Fract(i) * that
+  def /(that: Fract): Fract = Fract(i) / that
 }
