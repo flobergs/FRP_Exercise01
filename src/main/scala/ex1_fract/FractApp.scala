@@ -11,11 +11,10 @@ object FractApp {
     assert(Fract(20,25).toString == "4 \\ 5")
     assert(Fract(1,2) equals Fract(2,4))
     assert(!(Fract(1,2) equals Fract(3,4)))
-    assert((Fract(1,2) + Fract(3,4)).toString == "5 \\ 4")
-    assert((Fract(1,2) - Fract(3,4)).toString == "-1 \\ 4")
-    assert((Fract(1,2) * Fract(3,4)).toString == "3 \\ 8")
-    assert((Fract(1,2) / Fract(1,4)).toString == "2")
-
+    assert(Fract(1,2) + Fract(3,4) == Fract(5, 4))
+    assert(Fract(1,2) - Fract(3,4) == Fract(-1, 4))
+    assert(Fract(1,2) * Fract(3,4) == Fract(3, 8))
+    assert(Fract(1,2) / Fract(1,4) == Fract(2))
+    assert(Fract(1,2) + Fract(2, 3) * Fract(4, 1).rec() == Fract(2, 3))
   }
-
 }
