@@ -52,7 +52,20 @@ def infix(expr: Expr): String = {
   }
 }
 
-def eval(expr: Expr, bds: Map[String, Double]): Double = ???
+def eval(expr: Expr, bds: Map[String, Double]): Double = {
+  def eval(expr: Expr): Double = {
+    expr match {
+      case Lit(v) => v
+      case Var(n) => bds(n)
+      case Add(l, r) => eval(l) + eval(r)
+      case Mul(l, r) => eval(l) * eval(r)
+      case Neg(s) => -eval(s)
+      case Recip(s) => 1/eval(s)
+    }
+  }
+
+  eval(expr)
+}
 
 def simplify(expr: Expr): Expr = ???
   
@@ -62,6 +75,15 @@ def assertEquals(expr: Expr, expected: String): Unit = {
   if (!success)
   {
     println(s"ERROR! actual \"$actual\" != expected \"$expected\"")
+    assert(success)
+  }
+}
+
+def assertEquals(expr: Expr, bds: Map[String, Double], expected: Double): Unit = {
+  val actual: Double = eval(expr, bds)
+  val success: Boolean = actual == expected
+  if (!success) {
+    println(s"ERROR! actual evaluation result \"$actual\" of expression \"${infix(expr)}\" != expected \"$expected\"")
     assert(success)
   }
 }
