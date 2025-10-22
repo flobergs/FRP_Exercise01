@@ -3,7 +3,7 @@ package ex1_fract
 import java.util.Objects
 import scala.runtime.ScalaRunTime
 
-final class Fract(_n: Int, _d: Int) {
+final class Fract(_n: Int, _d: Int) extends Ordered[Fract] {
   // fields are public by default
   val (numer, denom) = normalize(_n, _d)
 
@@ -24,6 +24,12 @@ final class Fract(_n: Int, _d: Int) {
   }
 
   override def hashCode(): Int = numer + denom
+
+  override def compare(that: Fract): Int = {
+    val a = numer * that.denom
+    val b = that.numer * denom
+    a compare b
+  }
 }
 
 object Fract {

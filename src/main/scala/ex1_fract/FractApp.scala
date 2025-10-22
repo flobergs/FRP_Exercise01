@@ -5,6 +5,7 @@ import ex1_fract.Fract._
 object FractApp {
 
   def main(args: Array[String]): Unit = {
+    // Task 1.1
     assert(Fract(1,2).toString == "1 \\ 2")
     assert(Fract(1,-2).toString == "-1 \\ 2")
     assert(Fract(-1,2).toString == "-1 \\ 2")
@@ -16,5 +17,17 @@ object FractApp {
     assert(Fract(1,2) * Fract(3,4) == Fract(3, 8))
     assert(Fract(1,2) / Fract(1,4) == Fract(2))
     assert(Fract(1,2) + Fract(2, 3) * Fract(4, 1).rec() == Fract(2, 3))
+
+    // Task 2.1
+    assert(Fract(1,2).compareTo(Fract(2,4)) == 0)
+    assert(Fract(1,2).compareTo(Fract(2,4)) <= 0)
+    assert(Fract(1,2).compareTo(Fract(2,4)) >= 0)
+    assert(Fract(1,2).compareTo(Fract(3,4)) < 0)
+    assert(Fract(1,2).compareTo(Fract(3,4)) <= 0)
+    assert(Fract(1,2).compareTo(Fract(1,4)) > 0)
+    assert(Fract(1,2).compareTo(Fract(1,4)) >= 0)
+    assert(Fract(1,2).compare(Fract(2,4)) == 0)
+    assert(Fract(1,2).compare(Fract(3,4)) < 0)
+    assert(Fract(1, 4) < Fract(2, 5))
   }
 }
